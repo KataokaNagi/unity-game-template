@@ -5,7 +5,37 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: d1c3109bdb54ad54c8a2b2838528e640
+  - enabled: 1
+    path: Assets/Scenes/Start.unity
+    guid: 22e82c2726ac3114a8f8c97fd5f837fd
+  - enabled: 1
+    path: Assets/Scenes/GameManager.unity
+    guid: 360959c864e1fb64a8e2c1a081ecbd09
+  - enabled: 1
+    path: Assets/Scenes/Title.unity
+    guid: 9934386cc1d9fc74db3026a71b9dfeb4
+  - enabled: 1
+    path: Assets/Scenes/Option.unity
+    guid: 831c16b7e17d0934c81310a5c4af65b6
+  - enabled: 1
+    path: Assets/Scenes/Load.unity
+    guid: 3378bece4281d3a45b10dec83e9802b9
+  - enabled: 1
+    path: Assets/Scenes/Ingame.unity
+    guid: 51853dc2112253f438bc08d2a18ee06d
+  - enabled: 1
+    path: Assets/Scenes/Stage1.unity
+    guid: d0eaf7ce33c544947af458970ea92564
+  - enabled: 1
+    path: Assets/Scenes/Stage2.unity
+    guid: bde7a4088139e3440bc019c1bfc0c55b
+  - enabled: 1
+    path: Assets/Scenes/Stage3.unity
+    guid: aca022d70d93ef54dbeac210b96c9db0
+  - enabled: 1
+    path: Assets/Scenes/Result.unity
+    guid: dc90582c96bed67418126a934a198063
   m_configObjects: {}

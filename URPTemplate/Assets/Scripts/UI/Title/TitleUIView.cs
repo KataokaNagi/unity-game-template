@@ -44,13 +44,13 @@ public sealed class TitleUIView : MonoBehaviour
     [Space(10)]
 
     [Header("UI Parts")]
-    [SerializeField] Button _startGameButton;
-    [SerializeField] Button _selectStageButton;
-    [SerializeField] Button _optionButton;
-    [SerializeField] Button _exitButton;
-    [SerializeField] Text _pressAnyButtonText;
-    [SerializeField] GameObject titleUI;
-
+    [SerializeField] Text _timerSecsText;
+    [SerializeField] GameObject _hpsUi;
+    [SerializeField] GameObject _leftBottomTutorialUi;
+    [SerializeField] GameObject _centorTutorialUi;
+    [SerializeField] GameObject _kunaisUi;
+    [SerializeField] GameObject _energyGaugeUi;
+    [SerializeField] Button _centorTutorialCloseButton;
     void Awake()
     {
         // Set invoking events on click buttons.
@@ -61,21 +61,45 @@ public sealed class TitleUIView : MonoBehaviour
         // _exitButton.OnPointerExit.AddListener(() => OnExitButtonClicked.Invoke());
     }
 
-    # region Change Button UI.
-    public void ChangeButtonUI(int buttonTypeORState)
+    #region Set UI.
+
+    #region Set UI other than button.
+    public void SetTimerSecsUi(float timerSecs)
     {
-        int buttonType = buttonTypeORState & (int)ButtonType.Range;
-        int buttonState = buttonTypeORState & (int)ButtonState.Range;
+    }
+    public void SetHpsUi(int numOfHps)
+    {
+    }
+    public void SetLeftBottomTutorialUi(LeftBottomTutorialTags leftBottomTutorialTags)
+    {
+    }
+    public void SetCentorTutorialUi(CentorTutorialTags centorTutorialTags)
+    {
+    }
+    public void SetKunaisUi(int numOfKunais)
+    {
+    }
+    public void SetEnergyGaugeUi(int numOfEnergy)
+    {
+    }
+
+    #endregion
+
+    #region Set Button UI.
+    public void SetButtonUI(int buttonTypeORState)
+    {
+        int buttonType = buttonTypeORState & (int)IngameButtonType.Range;
+        int buttonState = buttonTypeORState & (int)ButtonUiState.Range;
 
         switch (buttonState)
         {
-            case (int)ButtonState.Unhover:
+            case (int)ButtonUiState.Unhover:
                 break;
-            case (int)ButtonState.Hover:
+            case (int)ButtonUiState.Hover:
                 break;
-            case (int)ButtonState.Down:
+            case (int)ButtonUiState.Down:
                 break;
-            case (int)ButtonState.Up:
+            case (int)ButtonUiState.Up:
                 break;
             default:
                 Debug.Log("Unknown button type");
@@ -87,21 +111,9 @@ public sealed class TitleUIView : MonoBehaviour
     {
         switch (buttonType)
         {
-            case (int)ButtonType.StartGame:
+            case (int)IngameButtonType.CentorTutorialClose:
                 // TODO
                 // _startGameButton.
-                break;
-            case (int)ButtonType.SelectStage:
-                // TODO
-                // _selectStageButton.
-                break;
-            case (int)ButtonType.Option:
-                // TODO
-                // _optionButton.
-                break;
-            case (int)ButtonType.Exit:
-                // TODO
-                // _exitButton.
                 break;
             default:
                 Debug.LogError("Unknown button type");
@@ -112,21 +124,9 @@ public sealed class TitleUIView : MonoBehaviour
     {
         switch (buttonType)
         {
-            case (int)ButtonType.StartGame:
+            case (int)IngameButtonType.CentorTutorialClose:
                 // TODO
                 // _startGameButton.
-                break;
-            case (int)ButtonType.SelectStage:
-                // TODO
-                // _selectStageButton.
-                break;
-            case (int)ButtonType.Option:
-                // TODO
-                // _optionButton.
-                break;
-            case (int)ButtonType.Exit:
-                // TODO
-                // _exitButton.
                 break;
             default:
                 Debug.LogError("Unknown button type");
@@ -137,21 +137,9 @@ public sealed class TitleUIView : MonoBehaviour
     {
         switch (buttonType)
         {
-            case (int)ButtonType.StartGame:
+            case (int)IngameButtonType.CentorTutorialClose:
                 // TODO
                 // _startGameButton.
-                break;
-            case (int)ButtonType.SelectStage:
-                // TODO
-                // _selectStageButton.
-                break;
-            case (int)ButtonType.Option:
-                // TODO
-                // _optionButton.
-                break;
-            case (int)ButtonType.Exit:
-                // TODO
-                // _exitButton.
                 break;
             default:
                 Debug.LogError("Unknown button type");
@@ -162,21 +150,9 @@ public sealed class TitleUIView : MonoBehaviour
     {
         switch (buttonType)
         {
-            case (int)ButtonType.StartGame:
+            case (int)IngameButtonType.CentorTutorialClose:
                 // TODO
                 // _startGameButton.
-                break;
-            case (int)ButtonType.SelectStage:
-                // TODO
-                // _selectStageButton.
-                break;
-            case (int)ButtonType.Option:
-                // TODO
-                // _optionButton.
-                break;
-            case (int)ButtonType.Exit:
-                // TODO
-                // _exitButton.
                 break;
             default:
                 Debug.LogError("Unknown button type");
@@ -185,20 +161,12 @@ public sealed class TitleUIView : MonoBehaviour
     }
     #endregion
 
-    #region Change UI on pressing any button.
-    public void TogglePressAnyButton(bool pressedAnyButton)
-    {
-        // Press Any button.
-        _pressAnyButtonText.gameObject.SetActive(pressedAnyButton);
-
-        // Buttons.
-        _startGameButton.gameObject.SetActive(!pressedAnyButton);
-        _selectStageButton.gameObject.SetActive(!pressedAnyButton);
-        _optionButton.gameObject.SetActive(!pressedAnyButton);
-        _exitButton.gameObject.SetActive(!pressedAnyButton);
-    }
     #endregion
 
+    private void SetActiveChildObject(this GameObject gameObject, string childName, bool isActive)
+    {
+        gameObject.transform.Find(childName).gameObject.SetActive(isActive);
+    }
 
     // TODO: On press any button, wait time & play SE.
     // TODO: On press esc key, return to "press any button."

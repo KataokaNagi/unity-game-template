@@ -7,7 +7,7 @@
 /// @history  add
 /// </summary>
 
-public enum ButtonUIState
+public enum ButtonUiState
 {
     Unhover = (1 << 0),
     Hover = (1 << 1),

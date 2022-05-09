@@ -31,7 +31,7 @@ public sealed class IngameUIModel : MonoBehaviour
     [Space(10)]
 
     [Header("Events")]
-    public IntEvent OnStartGameButtonChanged = new IntEvent();
+    public IntEvent OnCentorTutorialCloseButtonChanged = new IntEvent();
     public IntEvent OnSelectStageButtonChanged = new IntEvent();
     public IntEvent OnOptionButtonChanged = new IntEvent();
     public IntEvent OnExitButtonChanged = new IntEvent();
@@ -39,7 +39,7 @@ public sealed class IngameUIModel : MonoBehaviour
 
 
     // UI parts' states.
-    private ButtonState _startGameButtonState = ButtonState.Unhover;
+    private ButtonState _centorTutorialCloseButtonState = ButtonState.Unhover;
     private ButtonState _selectStageButtonState = ButtonState.Unhover;
     private ButtonState _optionButtonState = ButtonState.Unhover;
     private ButtonState _exitButtonState = ButtonState.Unhover;
@@ -49,64 +49,64 @@ public sealed class IngameUIModel : MonoBehaviour
     # region Unhover buttons.
     public void UnhoverStartGameButton()
     {
-        InvokeButtonEvent(ButtonState.Unhover, ButtonType.StartGame);
+        InvokeButtonEvent(ButtonState.Unhover, IngameButtonType.StartGame);
     }
     public void UnhoverSelectStageButton()
     {
-        InvokeButtonEvent(ButtonState.Unhover, ButtonType.SelectStage);
+        InvokeButtonEvent(ButtonState.Unhover, IngameButtonType.SelectStage);
     }
     public void UnhoverOptionButton()
     {
-        InvokeButtonEvent(ButtonState.Unhover, ButtonType.Option);
+        InvokeButtonEvent(ButtonState.Unhover, IngameButtonType.Option);
     }
     public void UnhoverExitButton()
     {
-        InvokeButtonEvent(ButtonState.Unhover, ButtonType.Exit);
+        InvokeButtonEvent(ButtonState.Unhover, IngameButtonType.Exit);
     }
     # endregion
 
     # region Hover buttons.
     public void HoverStartGameButton()
     {
-        InvokeButtonEvent(ButtonState.Hover, ButtonType.StartGame);
+        InvokeButtonEvent(ButtonState.Hover, IngameButtonType.StartGame);
     }
     public void HoverSelectStageButton()
     {
-        InvokeButtonEvent(ButtonState.Hover, ButtonType.SelectStage);
+        InvokeButtonEvent(ButtonState.Hover, IngameButtonType.SelectStage);
     }
     public void HoverOptionButton()
     {
-        InvokeButtonEvent(ButtonState.Hover, ButtonType.Option);
+        InvokeButtonEvent(ButtonState.Hover, IngameButtonType.Option);
     }
     public void HoverExitButton()
     {
-        InvokeButtonEvent(ButtonState.Hover, ButtonType.Exit);
+        InvokeButtonEvent(ButtonState.Hover, IngameButtonType.Exit);
     }
     # endregion
 
     # region Down buttons.
     public void DownStartGameButton()
     {
-        InvokeButtonEvent(ButtonState.Down, ButtonType.StartGame);
+        InvokeButtonEvent(ButtonState.Down, IngameButtonType.StartGame);
     }
     public void DownSelectStageButton()
     {
-        InvokeButtonEvent(ButtonState.Down, ButtonType.SelectStage);
+        InvokeButtonEvent(ButtonState.Down, IngameButtonType.SelectStage);
     }
     public void DownOptionButton()
     {
-        InvokeButtonEvent(ButtonState.Down, ButtonType.Option);
+        InvokeButtonEvent(ButtonState.Down, IngameButtonType.Option);
     }
     public void DownExitButton()
     {
-        InvokeButtonEvent(ButtonState.Down, ButtonType.Exit);
+        InvokeButtonEvent(ButtonState.Down, IngameButtonType.Exit);
     }
     #endregion
 
     #region Up buttons.
     public void UpStartGameButton()
     {
-        InvokeButtonEvent(ButtonState.Up, ButtonType.StartGame);
+        InvokeButtonEvent(ButtonState.Up, IngameButtonType.StartGame);
         // TODO: Wait Time?
         // StartCoroutine(scenesManager.AsyncLoadScenes(SceneManager.IngameScenes));
 
@@ -119,7 +119,7 @@ public sealed class IngameUIModel : MonoBehaviour
 
     public void UpSelectStageButton()
     {
-        InvokeButtonEvent(ButtonState.Up, ButtonType.SelectStage);
+        InvokeButtonEvent(ButtonState.Up, IngameButtonType.SelectStage);
         _selectStageButtonState = ButtonState.Unhover;
 
         // TODO: Wait Time?
@@ -132,7 +132,7 @@ public sealed class IngameUIModel : MonoBehaviour
 
     public void UpOptionButton()
     {
-        InvokeButtonEvent(ButtonState.Up, ButtonType.Option);
+        InvokeButtonEvent(ButtonState.Up, IngameButtonType.Option);
         // TODO: Wait Time?
         // optionUIModel.setIsActiveOptionUI(true);
 
@@ -142,7 +142,7 @@ public sealed class IngameUIModel : MonoBehaviour
 
     public void UpExitButton()
     {
-        InvokeButtonEvent(ButtonState.Up, ButtonType.Exit);
+        InvokeButtonEvent(ButtonState.Up, IngameButtonType.Exit);
         // TODO: Wait Time?
         // TODO: Swap code bellow
         // gameManager.endGame();
@@ -164,25 +164,13 @@ public sealed class IngameUIModel : MonoBehaviour
     }
     #endregion
 
-    private void InvokeButtonEvent(ButtonState buttonState, ButtonType buttonType)
+    private void InvokeButtonEvent(ButtonUiState buttonState, IngameButtonType buttonType)
     {
         switch (buttonType)
         {
-            case ButtonType.StartGame:
-                _startGameButtonState = buttonState;
-                OnStartGameButtonChanged.Invoke((int)buttonState | (int)buttonType);
-                break;
-            case ButtonType.SelectStage:
-                _selectStageButtonState = buttonState;
-                OnSelectStageButtonChanged.Invoke((int)buttonState | (int)buttonType);
-                break;
-            case ButtonType.Option:
-                _optionButtonState = buttonState;
-                OnOptionButtonChanged.Invoke((int)buttonState | (int)buttonType);
-                break;
-            case ButtonType.Exit:
-                _exitButtonState = buttonState;
-                OnExitButtonChanged.Invoke((int)buttonState | (int)buttonType);
+            case IngameButtonType.CentorTutorialClose:
+                _centorTutorialCloseButtonState = buttonState;
+                OnCentorTutorialCloseButtonChanged.Invoke((int)buttonState | (int)buttonType);
                 break;
             default:
                 Debug.LogError("Unknown button type");
@@ -193,9 +181,6 @@ public sealed class IngameUIModel : MonoBehaviour
 
 public enum IngameButtonType
 {
-    StartGame = (1 << 0),
-    SelectStage = (1 << 1),
-    Option = (1 << 2),
-    Exit = (1 << 3),
-    Range = 0b00001111
+    CentorTutorialClose = (1 << 0),
+    Range = 0b10000
 }

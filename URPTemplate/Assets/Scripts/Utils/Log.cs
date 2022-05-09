@@ -12,8 +12,8 @@ using UnityEngine;
 public class Log
 {
 
-    private const bool ENABLE_DEBUG = true;
-    private const bool ENABLE_VERBOSE = true;
+    private static bool ENABLE_DEBUG = true;
+    private static bool ENABLE_VERBOSE = true;
 
     /// <summary>
     /// Debug comment (important)
@@ -21,21 +21,21 @@ public class Log
     /// </summary>
     /// <param name="tag">Class or function tag. (e.g. this.gameObject)</param>
     /// <param name="comment">Your log comment.</param>
-    public void d(string comment, GameObject gameObject)
+    public static void d(string comment, GameObject gameObject)
     {
         if (ENABLE_DEBUG)
         {
             Debug.Log($"[{gameObject.ToString()}] {comment}.", gameObject);
         }
     }
-    public void d(string comment, string tag)
+    public static void d(string comment, string tag)
     {
         if (ENABLE_DEBUG)
         {
             Debug.Log($"[{tag}] {comment}.");
         }
     }
-    public void d(string comment)
+    public static void d(string comment)
     {
         if (ENABLE_DEBUG)
         {
@@ -49,21 +49,21 @@ public class Log
     /// </summary>
     /// <param name="tag">Class or function tag. (e.g. this.gameObject)</param>
     /// <param name="comment">Your log comment.</param>
-    public void v(string comment, GameObject gameObject)
+    public static void v(string comment, GameObject gameObject)
     {
         if (ENABLE_VERBOSE)
         {
             Debug.Log($"[{gameObject.ToString()}] {comment}.", gameObject);
         }
     }
-    public void v(string comment, string tag)
+    public static void v(string comment, string tag)
     {
         if (ENABLE_VERBOSE)
         {
             Debug.Log($"[{tag}] {comment}.");
         }
     }
-    public void v(string comment)
+    public static void v(string comment)
     {
         if (ENABLE_VERBOSE)
         {
@@ -77,15 +77,15 @@ public class Log
     /// </summary>
     /// <param name="tag">Class or function tag. (e.g. this.gameObject)</param>
     /// <param name="comment">Your log comment.</param>
-    public void e(string comment, GameObject gameObject)
+    public static void e(string comment, GameObject gameObject)
     {
         Debug.LogError($"[{gameObject.ToString()}] {comment}.", gameObject);
     }
-    public void e(string comment, string tag)
+    public static void e(string comment, string tag)
     {
         Debug.LogError($"[{tag}] {comment}.");
     }
-    public void e(string comment)
+    public static void e(string comment)
     {
         Debug.LogError($"{comment}.");
     }
@@ -96,15 +96,15 @@ public class Log
     /// </summary>
     /// <param name="tag">Class or function tag. (e.g. this.gameObject)</param>
     /// <param name="comment">Your log comment.</param>
-    public void w(string comment, GameObject gameObject)
+    public static void w(string comment, GameObject gameObject)
     {
         Debug.LogWarning($"[{gameObject.ToString()}] {comment}.", gameObject);
     }
-    public void w(string comment, string tag)
+    public static void w(string comment, string tag)
     {
         Debug.LogWarning($"[{tag}] {comment}.");
     }
-    public void w(string comment)
+    public static void w(string comment)
     {
         Debug.LogWarning($"{comment}.");
     }

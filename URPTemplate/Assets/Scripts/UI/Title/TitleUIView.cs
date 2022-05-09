@@ -10,6 +10,8 @@
 /// </summary>
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -51,6 +53,18 @@ public sealed class TitleUIView : MonoBehaviour
     [SerializeField] GameObject _kunaisUi;
     [SerializeField] GameObject _energyGaugeUi;
     [SerializeField] Button _centorTutorialCloseButton;
+    [Space(10)]
+
+    [Header("Consts (if BaseName = HpFire, then children's names = HpFire1, 2, ...)")]
+    [SerializeField] int _maxNumOfHps = 5;
+    [SerializeField] string _hpObjectBaseName = "HpFire";
+    [SerializeField] int _maxNumOfKunais = 3;
+    [SerializeField] string _kunaiObjectBaseName = "Kunai";
+    [SerializeField] int _maxNumOfEnergy = 5;
+    [SerializeField] float _energyTransformingSeconds = 0.5f;
+
+    private int _pastNumOfEnergy = 0;
+
     void Awake()
     {
         // Set invoking events on click buttons.
@@ -66,21 +80,110 @@ public sealed class TitleUIView : MonoBehaviour
     #region Set UI other than button.
     public void SetTimerSecsUi(float timerSecs)
     {
+        _timerSecsText.text = timerSecs.ToString();
     }
     public void SetHpsUi(int numOfHps)
     {
+        // Exception of range.
+        if (numOfHps < 0 || _maxNumOfHps < numOfHps)
+        {
+            Log.e($"Unsuspected num of hps: {numOfHps}", this.gameObject);
+            return;
+        }
+
+        // Set active.
+        for (int hpId = 1; hpId <= numOfHps; ++hpId)
+        {
+            var isActive = (hpId <= numOfHps) ? true : false;
+            var childName = $"{_hpObjectBaseName}{hpId.ToString()}";
+            SetActiveChildObject(_hpsUi, childName, isActive);
+        }
     }
     public void SetLeftBottomTutorialUi(LeftBottomTutorialTags leftBottomTutorialTags)
     {
+        switch (leftBottomTutorialTags)
+        {
+            case LeftBottomTutorialTags.NoView:
+                // TODO
+                break;
+            // TODO: Add cases.
+            default:
+                Log.e($"Unexpected leftBottomTutorialTags: {leftBottomTutorialTags}", this.gameObject);
+                break;
+        }
     }
     public void SetCentorTutorialUi(CentorTutorialTags centorTutorialTags)
     {
+        switch (centorTutorialTags)
+        {
+            case CentorTutorialTags.NoView:
+                // TODO
+                break;
+            // TODO: Add cases.
+            default:
+                Log.e($"Unexpected centorTutorialTags: {centorTutorialTags}", this.gameObject);
+                break;
+        }
     }
     public void SetKunaisUi(int numOfKunais)
     {
+        // Exception of range.
+        if (numOfKunais < 0 || _maxNumOfKunais < numOfKunais)
+        {
+            Log.e($"Unsuspected num of kunais: {numOfKunais}", this.gameObject);
+            return;
+        }
+
+        // Set active.
+        for (int kunaiId = 1; kunaiId <= numOfKunais; ++kunaiId)
+        {
+            var isActive = (kunaiId <= numOfKunais) ? true : false;
+            var childName = $"{_kunaiObjectBaseName}{kunaiId.ToString()}";
+            SetActiveChildObject(ref _hpsUi, childName, isActive);
+        }
     }
     public void SetEnergyGaugeUi(int numOfEnergy)
     {
+        // Exception of range.
+        if (numOfEnergy < 0 || _maxNumOfEnergy < numOfEnergy)
+        {
+            Log.e($"Unsuspected numOfEnergy: {numOfEnergy}", this.gameObject);
+            return;
+        }
+
+        // TODO: Make more beauty
+        StartCoroutine(CoSetShrinkingTransformX(_pastNumOfEnergy, numOfEnergy));
+        _pastNumOfEnergy = numOfEnergy;
+    }
+
+    // Need ref?
+    private IEnumerator CoSetShrinkingTransformX(int fromNumOfEnergy, int toNumOfEnergy)
+    {
+        Vector3 energyScale = _energyGaugeUi.transform.localScale;
+        float fromScaleX = energyScale.x;
+        float toScaleX = fromScaleX * ((float)toNumOfEnergy / fromNumOfEnergy);
+        float maxScaleX = Mathf.Max(fromScaleX, toScaleX);
+        float minScaleX = Mathf.Min(fromScaleX, toScaleX);
+
+        float dT = Time.deltaTime;
+        bool increaceEnergy = (fromNumOfEnergy <= toNumOfEnergy);
+
+        if (increaceEnergy)
+        {
+            for (float cntTime = 0f; cntTime > _energyTransformingSeconds; cntTime += dT)
+            {
+                energyScale.x = Easing.SineInOut(t, _energyTransformingSeconds, minScaleX, maxScaleX);
+                yield return null;
+            }
+        }
+        else
+        {
+            for (float cntTime = _energyTransformingSeconds; cntTime < 0; cntTime -= dT)
+            {
+                energyScale.x = Easing.SineInOut(t, _energyTransformingSeconds, minScaleX, maxScaleX);
+                yield return null;
+            }
+        }
     }
 
     #endregion
@@ -163,7 +266,7 @@ public sealed class TitleUIView : MonoBehaviour
 
     #endregion
 
-    private void SetActiveChildObject(this GameObject gameObject, string childName, bool isActive)
+    private void SetActiveChildObject(ref GameObject gameObject, string childName, bool isActive)
     {
         gameObject.transform.Find(childName).gameObject.SetActive(isActive);
     }

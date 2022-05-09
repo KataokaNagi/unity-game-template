@@ -1,5 +1,5 @@
 /// <summary>
-/// @file     ButtonUiState.cs
+/// @file     ButtonUIState.cs
 /// @brief    Common button ui state.
 /// @auther   Kataoka
 /// @date     2022-05-10 00:10:37
@@ -7,7 +7,7 @@
 /// @history  add
 /// </summary>
 
-public enum ButtonUiState
+public enum ButtonUIState
 {
     Unhover = (1 << 0),
     Hover = (1 << 1),

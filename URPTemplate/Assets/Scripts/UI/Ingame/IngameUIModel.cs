@@ -2,7 +2,7 @@
 /// @file     IngameUIModel.cs
 /// @brief    Model for mvp model.
 /// @auther   Kataoka
-/// @date     2022-05-05 22:22:11
+/// @date     2022-05-10 06:07:08
 /// @version  1.0
 /// @history  add
 /// @see      [UnityにおけるMVPパターンについて](https://virtualcast.jp/blog/2019/11/mvp_pattern_on_unity/)
@@ -25,144 +25,77 @@ public sealed class IngameUIModel : MonoBehaviour
     // [Header("Textures")]
     // [Space(10)]
 
-    [Header("Scripts")]
-    public ScenesManager scenesManager;
-    public OptionSceneManager optionSceneManager;
-    [Space(10)]
-
     [Header("Events")]
+    public FloatEvent OnTimerUiChanged = new FloatEvent();
+    public IntEvent OnHpUiChanged = new IntEvent();
+    public LeftBottomTutorialEvent OnLeftBottomTutorialUiChanged = new LeftBottomTutorialEvent();
+    public CentorTutorialUiEvent OnCentorTutorialUiChanged = new CentorTutorialUiEvent();
     public IntEvent OnCentorTutorialCloseButtonChanged = new IntEvent();
-    public IntEvent OnSelectStageButtonChanged = new IntEvent();
-    public IntEvent OnOptionButtonChanged = new IntEvent();
-    public IntEvent OnExitButtonChanged = new IntEvent();
-    public BoolEvent OnPressEnyButton = new BoolEvent();
+    public IntEvent OnKunaiUiChanged = new IntEvent();
+    public IntEvent OnEnergyUiChanged = new IntEvent();
+    // [Space(10)]
 
 
     // UI parts' states.
-    private ButtonState _centorTutorialCloseButtonState = ButtonState.Unhover;
-    private ButtonState _selectStageButtonState = ButtonState.Unhover;
-    private ButtonState _optionButtonState = ButtonState.Unhover;
-    private ButtonState _exitButtonState = ButtonState.Unhover;
-    private bool _pressedAnyButton = false;
-    # endregion
+    [Header("UI parts' states init")]
+    [SerializeField] float _timerSecs = 300.0f;
+    [SerializeField] int _hp = 5;
+    [SerializeField] LeftBottomTutorialTags _leftBottomTutorial = LeftBottomTutorialTags.NoView;
+    [SerializeField] CentorTutorialTags _centorTutorial = CentorTutorialTags.NoView;
+    [SerializeField] int _kunai = 0;
+    [SerializeField] int _energy = 0;
+    #endregion
 
-    # region Unhover buttons.
-    public void UnhoverStartGameButton()
+    private ButtonUiState _centorTutorialCloseButtonState = ButtonUiState.Unhover;
+
+    #region Unhover buttons.
+    public void UnhoverCentorTutorialCloseButton()
     {
-        InvokeButtonEvent(ButtonState.Unhover, IngameButtonType.StartGame);
-    }
-    public void UnhoverSelectStageButton()
-    {
-        InvokeButtonEvent(ButtonState.Unhover, IngameButtonType.SelectStage);
-    }
-    public void UnhoverOptionButton()
-    {
-        InvokeButtonEvent(ButtonState.Unhover, IngameButtonType.Option);
-    }
-    public void UnhoverExitButton()
-    {
-        InvokeButtonEvent(ButtonState.Unhover, IngameButtonType.Exit);
+        InvokeButtonEvent(ButtonUiState.Unhover, IngameButtonType.CentorTutorialClose);
     }
     # endregion
 
     # region Hover buttons.
-    public void HoverStartGameButton()
+    public void HoverCentorTutorialCloseButton()
     {
-        InvokeButtonEvent(ButtonState.Hover, IngameButtonType.StartGame);
-    }
-    public void HoverSelectStageButton()
-    {
-        InvokeButtonEvent(ButtonState.Hover, IngameButtonType.SelectStage);
-    }
-    public void HoverOptionButton()
-    {
-        InvokeButtonEvent(ButtonState.Hover, IngameButtonType.Option);
-    }
-    public void HoverExitButton()
-    {
-        InvokeButtonEvent(ButtonState.Hover, IngameButtonType.Exit);
+        InvokeButtonEvent(ButtonUiState.Hover, IngameButtonType.CentorTutorialClose);
     }
     # endregion
 
     # region Down buttons.
-    public void DownStartGameButton()
+    public void DownCentorTutorialCloseButton()
     {
-        InvokeButtonEvent(ButtonState.Down, IngameButtonType.StartGame);
-    }
-    public void DownSelectStageButton()
-    {
-        InvokeButtonEvent(ButtonState.Down, IngameButtonType.SelectStage);
-    }
-    public void DownOptionButton()
-    {
-        InvokeButtonEvent(ButtonState.Down, IngameButtonType.Option);
-    }
-    public void DownExitButton()
-    {
-        InvokeButtonEvent(ButtonState.Down, IngameButtonType.Exit);
+        InvokeButtonEvent(ButtonUiState.Down, IngameButtonType.CentorTutorialClose);
     }
     #endregion
 
     #region Up buttons.
-    public void UpStartGameButton()
+    public void UpCentorTutorialCloseButton()
     {
-        InvokeButtonEvent(ButtonState.Up, IngameButtonType.StartGame);
+        InvokeButtonEvent(ButtonUiState.Up, IngameButtonType.CentorTutorialClose);
         // TODO: Wait Time?
         // StartCoroutine(scenesManager.AsyncLoadScenes(SceneManager.IngameScenes));
-
-        // Debug.
-        SceneManager.LoadSceneAsync("Ingame", LoadSceneMode.Additive);
-
-        scenesManager.UnloadScene("Title");
-        scenesManager.UnloadUnusedAssets();
-    }
-
-    public void UpSelectStageButton()
-    {
-        InvokeButtonEvent(ButtonState.Up, IngameButtonType.SelectStage);
-        _selectStageButtonState = ButtonState.Unhover;
-
-        // TODO: Wait Time?
-        // TODO: Select Game UI (inherit SelectGameUIModel class).
-        // _displaySelectGameUI = true;
-
-        // Debug.
-        Debug.Log("Invoke ClickSelectStageButton().");
-    }
-
-    public void UpOptionButton()
-    {
-        InvokeButtonEvent(ButtonState.Up, IngameButtonType.Option);
-        // TODO: Wait Time?
-        // optionUIModel.setIsActiveOptionUI(true);
-
-        // Debug.
-        SceneManager.LoadSceneAsync("Option", LoadSceneMode.Additive);
-    }
-
-    public void UpExitButton()
-    {
-        InvokeButtonEvent(ButtonState.Up, IngameButtonType.Exit);
-        // TODO: Wait Time?
-        // TODO: Swap code bellow
-        // gameManager.endGame();
-
-        // Debug: End game.
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
-    }
-    # endregion
-
-    # region Pressed any buttton
-    public void SetPressedAnyButton(bool pressedAnyButton)
-    {
-        _pressedAnyButton = pressedAnyButton;
-        OnPressEnyButton.Invoke(pressedAnyButton);
     }
     #endregion
+
+    public void SetTimerSecs(float timerSecs)
+    {
+    }
+    public void SetHp(int hp)
+    {
+    }
+    public void SetLeftBottomTutorialUiTag(LeftBottomTutorialTags leftBottomTutorialTags)
+    {
+    }
+    public void SetCentorTutorialUiTag(CentorTutorialTags centorTutorialTags)
+    {
+    }
+    public void SetNumOfKunai(int numOfKunai)
+    {
+    }
+    public void SetNumOfEnergy(int numOfEnergy)
+    {
+    }
 
     private void InvokeButtonEvent(ButtonUiState buttonState, IngameButtonType buttonType)
     {

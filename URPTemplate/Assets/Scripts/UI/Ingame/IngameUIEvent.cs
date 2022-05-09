@@ -9,3 +9,10 @@
 /// </summary>
 
 using UnityEngine.Events;
+
+public sealed class LeftBottomTutorialEvent : UnityEvent<LeftBottomTutorialTags>
+{
+}
+public sealed class CentorTutorialUiEvent : UnityEvent<CentorTutorialTags>
+{
+}

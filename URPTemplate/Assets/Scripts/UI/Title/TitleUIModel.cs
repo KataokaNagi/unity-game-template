@@ -26,8 +26,7 @@ public sealed class TitleUIModel : MonoBehaviour
     // [Space(10)]
 
     [Header("Scripts")]
-    public ScenesManager scenesManager;
-    public OptionSceneManager optionSceneManager;
+    public ScenesLoadManager ScenesLoadManager;
     [Space(10)]
 
     [Header("Events")]
@@ -109,19 +108,12 @@ public sealed class TitleUIModel : MonoBehaviour
         InvokeButtonEvent(ButtonState.Up, ButtonType.StartGame);
         // TODO: Wait Time?
         // StartCoroutine(scenesManager.AsyncLoadScenes(SceneManager.IngameScenes));
-
-        // Debug.
-        SceneManager.LoadSceneAsync("Ingame", LoadSceneMode.Additive);
-
-        scenesManager.UnloadScene("Title");
-        scenesManager.UnloadUnusedAssets();
     }
 
     public void UpSelectStageButton()
     {
         InvokeButtonEvent(ButtonState.Up, ButtonType.SelectStage);
         _selectStageButtonState = ButtonState.Unhover;
-
         // TODO: Wait Time?
         // TODO: Select Game UI (inherit SelectGameUIModel class).
         // _displaySelectGameUI = true;
